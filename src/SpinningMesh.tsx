@@ -8,8 +8,10 @@ import { softShadows, MeshWobbleMaterial, OrbitControls } from "drei";
 // Styles
 import "./App.css";
 // React Spring
-import { useSpring, animated } from "react-spring";
 import * as THREE from "three";
+
+// @ts-ignore：无法被执行的代码的错误
+import { useSpring, a } from "react-spring/three";
 
 export interface SpinningMeshProps {
   position: any;
@@ -37,17 +39,17 @@ const SpinningMesh = ({ position, color, speed, args }: SpinningMeshProps) => {
     ? new THREE.Vector3(1.4, 1.4, 1.4)
     : new THREE.Vector3(1, 1, 1);
 
-  // React spring expand animation
-  // const props = useSpring({
-  //   scale: scale
-  // });
-
+  // @ts-ignore：无法被执行的代码的错误
+  const props = useSpring({
+    scale: expand ? [1.4, 1.4, 1.4] : [1, 1, 1],
+  });  
+  console.log('props', props)
   return (
-    <mesh
+    <a.mesh
       position={position}
       ref={mesh}
       onClick={() => setExpand(!expand)}
-      scale={scale}
+      scale={props.scale}
       castShadow
     >
       <boxBufferGeometry attach="geometry" args={args} />
@@ -57,7 +59,7 @@ const SpinningMesh = ({ position, color, speed, args }: SpinningMeshProps) => {
         attach="material"
         factor={0.6}
       />
-    </mesh>
+    </a.mesh>
 
     //Using Drei box if you want
     // <Box {...props} ref={mesh} castShadow>
